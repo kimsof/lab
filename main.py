@@ -3,6 +3,7 @@ from data_gen import N
 from Point import Point
 
 points = [0] * N  # массив точек
+
 for i in range(N):
     points[i] = Point(i)
 
@@ -11,16 +12,10 @@ for i in range(n):
     u = [point.u for point in points]
     for point in points:
         if point.u != 1 and point.u != -1:
-            value = 0
-            for j in range(0, len(point.neighbours)):
-                value += point.alpha[j + 1] * u[point.neighbours[j]] / point.alpha[0]
-            point.u = value
+            for j in range(point.bounds):
+                point.u -= point.alpha[j + 1] * u[point.neighbours[j][1]] / point.alpha[0]
 
-
-#     w = [point.u for point in points]
-#
-# e = np.zeros((N, 2))
-# e[:, 0] = u
-# e[:, 1] = w
-
-
+e = np.zeros((N, 2))
+e[:, 0] = u
+e[:, 1] = u
+print(e)

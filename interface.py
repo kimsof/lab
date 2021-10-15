@@ -1,5 +1,6 @@
 from tkinter import *
 from main import points
+#  from tkinter import Canvas
 
 map_window = Tk()
 map_window.title('Карта спутников')
@@ -30,6 +31,7 @@ for i in range(len(points)):
         dot.config(highlightbackground='yellow')
 
 
+
 def search():
     search_window = Toplevel(map_window)
     search_window.title('Поиск')
@@ -55,5 +57,7 @@ actions = Menu(main_menu)
 main_menu.add_cascade(label='Действия', menu=actions)
 actions.add_command(label='Поиск по номеру', command=search)
 actions.add_command(label='Выход', command=exit_app)
-
+#  canvas = Canvas()
+#  canvas.pack()
+#  canvas.create_line(points[1].x, points[1].y, points[2].x, points[2].y)
 map_window.mainloop()
