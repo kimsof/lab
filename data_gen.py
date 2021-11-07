@@ -1,5 +1,4 @@
 import numpy as np
-import time
 
 np.random.seed(100)
 
@@ -36,17 +35,15 @@ def get_neighbours():
         for i in range(N):
             distance_variants = np.zeros(3)
             for j in range(3):
-                # distance_variants[j] = np.linalg.norm(np.array([data[n, 0], data[n, 1]]) - (np.array([data[i, 0], data[i, 1]]) + array[j]))
-                distance_variants[j] = ((x_n - (data[i, 0] + array[j][0])) ** 2 + (
-                            y_n - (data[i, 1] + array[j][1])) ** 2) ** (1 / 2)
-            distances[i] = np.min(distance_variants)
+                distance_variants[j] = ((x_n - (data[i, 0] + array[j][0])) ** 2 +
+                                        (y_n - (data[i, 1] + array[j][1])) ** 2) ** (1 / 2)
+            distances[i] = [np.argmin(distance_variants), distance_variants[np.argmin(distance_variants)]]
 
         radius = 0
         points_in_radius = []
         while len(points_in_radius) < bonds[n]:
             for i in range(N):
-                if (distances[i] < radius) and not (i in points_in_radius) and not (
-                        i in [neib[0] for neib in neighbours_total[n]]) and (i in keys) and (i != n):
+                if (distances[i][1] < radius) and not (i in points_in_radius) and not (i in [neib[0] for neib in neighbours_total[n]]) and (i in keys) and (i != n):
                     points_in_radius.append(i)
             radius += 0.01
             if radius > 2 ** (1 / 2):
@@ -54,10 +51,10 @@ def get_neighbours():
 
         neighbours = np.random.choice(points_in_radius, int(bonds[n]), False)
 
-        neighbours_total[n] += [[neib, distances[neib]] for neib in neighbours]
+        neighbours_total[n] += [[neib, array[distances[neib][0]], distances[neib][1]] for neib in neighbours]
 
         for neib in neighbours:
-            neighbours_total[neib].append([n, distances[neib]])
+            neighbours_total[neib].append([n, array[distances[neib][0]]*-1, distances[neib][1]])
             bonds[neib] -= 1
             if bonds[neib] == 0:
                 del keys[keys.index(neib)]
@@ -68,9 +65,7 @@ def get_neighbours():
 # не всегда функции get_neighbours() удается распределить соседей корректно для всех точек c 1 раза, поэтому:
 for i in range(10):
     try:
-        t = time.time()
         neighbours = get_neighbours()
-        print(-t + time.time())
         break
     except OverflowError:
         continue
