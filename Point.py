@@ -18,8 +18,8 @@ class Point:
             dxdy = np.zeros((self.bounds, 2))
 
             for i in range(self.bounds):
-                dxdy[i, 0] = (data[self.neighbours[i][1], 0] + self.neighbours[i][0][0]) - self.x
-                dxdy[i, 1] = (data[self.neighbours[i][1], 1] + self.neighbours[i][0][1]) - self.y
+                dxdy[i, 0] = (data[self.neighbours[i][0], 0] + self.neighbours[i][1][0]) - self.x
+                dxdy[i, 1] = (data[self.neighbours[i][0], 1] + self.neighbours[i][1][1]) - self.y
 
             self.A = np.zeros((self.bounds + 1, self.bounds + 1))
             self.A[0, :] = np.ones(self.bounds + 1)
@@ -76,7 +76,7 @@ class Point:
     def inp(self):
         data_neighbours = ''
         for i in range(self.bounds):
-            m = self.neighbours[i][1]
-            data_neighbours += f'\n{(m, np.round(data[m, 0], 3), np.round(data[m, 1], 3), np.round(((self.x - (data[m, 0] + self.neighbours[i][0][0])) ** 2 + (self.y - (data[m, 1] + self.neighbours[i][0][1])) ** 2) ** (1 / 2), 3))}'
+            neib = self.neighbours[i][0]
+            data_neighbours += f'\n{(neib, np.round(data[neib, 0], 3), np.round(data[neib, 1], 3), np.round(self.neighbours[i][2], 3), data[neib, 2])} '
         return [self.number, (self.x, self.y), data_neighbours, self.u]
 
