@@ -3,7 +3,15 @@ import numpy as np
 np.random.seed(100)
 
 N = 100  # np.random.randint(100, 201)          # число спутников
+
+# l = 50
+# yy = np.zeros(N)
+# yy[:l] = np.ones(l)
+# yy[:int(l/2)] = np.ones(int(l/2))
+# np.random.shuffle(yy)
+
 data = np.zeros((N, 6), dtype=object)  # массив со всей информацией
+
 data[:, :2] = np.random.random_sample((N, 2))  # x и y каждой точки
 data[:, 2] = np.random.randint(-1, 2, N)  # источник/сток/ничего
 data[:, 3] = np.random.randint(4, 11, N)  # число связей (соседей) каждой точки
@@ -43,7 +51,8 @@ def get_neighbours():
         points_in_radius = []
         while len(points_in_radius) < bonds[n]:
             for i in range(N):
-                if (distances[i][1] < radius) and not (i in points_in_radius) and not (i in [neib[0] for neib in neighbours_total[n]]) and (i in keys) and (i != n):
+                if (distances[i][1] < radius) and not (i in points_in_radius) and not (
+                        i in [neib[0] for neib in neighbours_total[n]]) and (i in keys) and (i != n):
                     points_in_radius.append(i)
             radius += 0.01
             if radius > 2 ** (1 / 2):
@@ -54,7 +63,7 @@ def get_neighbours():
         neighbours_total[n] += [[neib, array[distances[neib][0]], distances[neib][1]] for neib in neighbours]
 
         for neib in neighbours:
-            neighbours_total[neib].append([n, array[distances[neib][0]]*-1, distances[neib][1]])
+            neighbours_total[neib].append([n, array[distances[neib][0]] * -1, distances[neib][1]])
             bonds[neib] -= 1
             if bonds[neib] == 0:
                 del keys[keys.index(neib)]
@@ -63,7 +72,7 @@ def get_neighbours():
 
 
 # не всегда функции get_neighbours() удается распределить соседей корректно для всех точек c 1 раза, поэтому:
-for i in range(10):
+for i in range(100):
     try:
         neighbours = get_neighbours()
         break
@@ -71,5 +80,8 @@ for i in range(10):
         continue
 
 for i in range(N):
+    neighbours[i] = sorted(neighbours[i], key=lambda i: i[0])
+    print(neighbours[i])
+
     data[i, 4] = neighbours[i]
-    print(i, data[i, 4])
+    # print(i, data[i, 4])

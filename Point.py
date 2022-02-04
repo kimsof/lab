@@ -37,40 +37,42 @@ class Point:
 
             if self.bounds == 6:
                 self.A[5, 1:] = dxdy[:, 0] * dxdy[:, 1]
-                self.A[6, 1:] = dxdy[:, 0] ** 3
+                self.A[6, 1:] = dxdy[:, 0] ** 3 * dxdy[:, 1] #dxdy[:, 0] ** 3
                 self.b = np.array([0, 0, 0, 2, 2, 0, 0])
 
             if self.bounds == 7:
                 self.A[5, 1:] = dxdy[:, 0] * dxdy[:, 1]
-                self.A[6, 1:] = dxdy[:, 0] ** 3
+                self.A[6, 1:] = dxdy[:, 0] ** 3 * dxdy[:, 1] #dxdy[:, 0] ** 3
                 self.A[7, 1:] = dxdy[:, 0] ** 2 * dxdy[:, 1]
                 self.b = np.array([0, 0, 0, 2, 2, 0, 0, 0])
 
             if self.bounds == 8:
                 self.A[5, 1:] = dxdy[:, 0] * dxdy[:, 1]
-                self.A[6, 1:] = dxdy[:, 0] ** 3
+                self.A[6, 1:] = dxdy[:, 0] ** 3 * dxdy[:, 1] #dxdy[:, 0] ** 3
                 self.A[7, 1:] = dxdy[:, 0] ** 2 * dxdy[:, 1]
                 self.A[8, 1:] = dxdy[:, 0] * dxdy[:, 1] ** 2
                 self.b = np.array([0, 0, 0, 2, 2, 0, 0, 0, 0])
 
             if self.bounds == 9:
                 self.A[5, 1:] = dxdy[:, 0] * dxdy[:, 1]
-                self.A[6, 1:] = dxdy[:, 0] ** 3
+                self.A[6, 1:] = dxdy[:, 0] ** 3 * dxdy[:, 1] #dxdy[:, 0] ** 3
                 self.A[7, 1:] = dxdy[:, 0] ** 2 * dxdy[:, 1]
                 self.A[8, 1:] = dxdy[:, 0] * dxdy[:, 1] ** 2
-                self.A[9, 1:] = dxdy[:, 1] ** 3
+                self.A[9, 1:] = dxdy[:, 1] ** 3 * dxdy[:, 0] #dxdy[:, 1] ** 3
                 self.b = np.array([0, 0, 0, 2, 2, 0, 0, 0, 0, 0])
 
             if self.bounds == 10:
                 self.A[5, 1:] = dxdy[:, 0] * dxdy[:, 1]
-                self.A[6, 1:] = dxdy[:, 0] ** 3
+                self.A[6, 1:] = dxdy[:, 0] ** 3 * dxdy[:, 1] #dxdy[:, 0] ** 3
                 self.A[7, 1:] = dxdy[:, 0] ** 2 * dxdy[:, 1]
                 self.A[8, 1:] = dxdy[:, 0] * dxdy[:, 1] ** 2
-                self.A[9, 1:] = dxdy[:, 1] ** 3
-                self.A[10, 1:] = dxdy[:, 0] ** 4
+                self.A[9, 1:] = dxdy[:, 1] ** 3 * dxdy[:, 0] #dxdy[:, 1] ** 3
+                self.A[10, 1:] = dxdy[:, 0] ** 2 * dxdy[:, 1] ** 2#dxdy[:, 0] ** 4
                 self.b = np.array([0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0])
 
             self.alpha = np.linalg.solve(self.A, self.b)  # коэффициенты разложения лапласиана
+            print(self.alpha, self.alpha.shape, self.number)
+            
 
     # функция для вывода информации о точке через интерфейс
     def inp(self):
@@ -80,3 +82,8 @@ class Point:
             data_neighbours += f'\n{(neib, np.round(data[neib, 0], 3), np.round(data[neib, 1], 3), np.round(self.neighbours[i][2], 3), data[neib, 2])} '
         return [self.number, (self.x, self.y), data_neighbours, self.u]
 
+
+
+# a = Point(0)
+# a = a.A
+# #print(a)
